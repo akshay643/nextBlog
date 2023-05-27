@@ -12,6 +12,7 @@ const MyProfile = () => {
   const { data: session } = useSession();
 
   const [myPosts, setMyPosts] = useState([]);
+  const [renderComp, setRenderComp] = useState(false);
 
   useEffect(() => {
     const fetchPosts = async () => {
@@ -22,11 +23,21 @@ const MyProfile = () => {
     };
 
     if (session?.user.id) fetchPosts();
-  }, [session?.user.id]);
+  }, [session?.user.id, renderComp]);
   if (!session?.user) {
     router.push("/");
   }
 
+  const handleBlogDelete = async (blogId) => {
+    const res = await axios.delete(`/api/blogs/${blogId}`);
+    console.log(res);
+    if (res.data === "Deleted") {
+      alert("deleted");
+      setRenderComp(!renderComp);
+    } else {
+      ("somethign went wrong");
+    }
+  };
   return (
     <section>
       <div
@@ -61,11 +72,12 @@ const MyProfile = () => {
                       <GrView />
                     </button>
                   </Link>
-                  <Link href={`/blog/${item?._id}`}>
-                    <button className="btn border-0  mx-1">
-                      <MdDeleteOutline />
-                    </button>
-                  </Link>
+                  <button
+                    onClick={() => handleBlogDelete(item?._id)}
+                    className="btn border-0  mx-1"
+                  >
+                    <MdDeleteOutline />
+                  </button>
                 </div>
               </div>
             </div>
