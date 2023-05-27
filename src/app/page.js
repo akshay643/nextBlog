@@ -16,7 +16,7 @@ export default function Home() {
           </span>
         </h1>
         <p className="desc text-center">
-          "Find Your Path, Share Your Thoughts with ThoughtTrail"
+          Find Your Path, Share Your Thoughts with ThoughtTrail
         </p>
       </div>
       <BlogSection />
