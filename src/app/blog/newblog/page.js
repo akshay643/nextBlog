@@ -4,10 +4,10 @@ import { useState } from "react";
 import { useSession } from "next-auth/react";
 import React from "react";
 import { useRouter } from "next/navigation";
-import { useAlert } from "react-alert";
+// import { useAlert } from "react-alert";
 
 const NewBlog = () => {
-  const alert = useAlert();
+  // const alert = useAlert();
   const router = useRouter();
 
   const { data: session } = useSession();
@@ -38,16 +38,8 @@ const NewBlog = () => {
         description: "",
       });
       router.push("/profile");
-      alert.show(
-        "Congratulations! Your Masterpiece is Born: A Journey into the Realm of Creation",
-        {
-          type: "success",
-          timeout: 5000, // custom timeout just for this one alert
-          containerStyle: {
-            backgroundColor: "red",
-            width: "400px",
-          },
-        }
+      alert(
+        "Congratulations! Your Masterpiece is Born: A Journey into the Realm of Creation"
       );
     }
   };

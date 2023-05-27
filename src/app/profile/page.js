@@ -6,7 +6,8 @@ import { useRouter } from "next/navigation";
 import axios from "axios";
 // import Profile from "@components/Profile";
 import Link from "next/link";
-
+import { MdDeleteOutline } from "react-icons/md";
+import { GrView } from "react-icons/gr";
 const MyProfile = () => {
   const router = useRouter();
   const { data: session } = useSession();
@@ -23,7 +24,9 @@ const MyProfile = () => {
 
     if (session?.user.id) fetchPosts();
   }, [session?.user.id]);
-
+  if (!session?.user) {
+    router.push("/");
+  }
   //   const handleEdit = (post) => {
   //     router.push(`/update-prompt?id=${post._id}`);
   //   };
@@ -67,16 +70,25 @@ const MyProfile = () => {
         </Link>
       </div>
       <div className="m-4 head_text">Your Blogs</div>
+
       <div className="row g-3 m-4">
         {myPosts?.map((item, key) => {
           return (
-            <div className="col-12">
+            <div className="col-12 col-lg-4">
               <div className="card">
                 <div className="card-body  text-center" key={key}>
                   <h5 className="card-title">{item.title}</h5>
                   <p className="card-title">{item.subtitle}</p>
+
                   <Link href={`/blog/${item?._id}`}>
-                    <button className="btn btn-outline-dark">Read More</button>
+                    <button className="btn border-0  mx-1">
+                      <GrView />
+                    </button>
+                  </Link>
+                  <Link href={`/blog/${item?._id}`}>
+                    <button className="btn border-0  mx-1">
+                      <MdDeleteOutline />
+                    </button>
                   </Link>
                 </div>
               </div>
