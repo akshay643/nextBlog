@@ -4,7 +4,6 @@ import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import axios from "axios";
-// import Profile from "@components/Profile";
 import Link from "next/link";
 import { MdDeleteOutline } from "react-icons/md";
 import { GrView } from "react-icons/gr";
@@ -40,7 +39,7 @@ const MyProfile = () => {
         <p className="desc text-center">
           Welcome to your personalized profile page.
           <br /> Share your exceptional blogs, thoughts and inspire others with
-          the power of your knowledge'
+          the power of your knowledge
         </p>
         <Link href="/blog/newblog">
           <button className="btn btn-outline-dark">Share Thought?</button>
