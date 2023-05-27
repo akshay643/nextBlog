@@ -2,7 +2,6 @@
 import { Inter } from "next/font/google";
 import "../../styles/globals.css";
 import Navbar from "@components/Navbar";
-const inter = Inter({ subsets: ["latin"] });
 import Provider from "@components/Provider";
 import "bootstrap/dist/css/bootstrap.min.css";
 export const metadata = {
@@ -13,7 +12,7 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body className={`${inter.className} header`}>
+      <body className="header">
         <Provider>
           <Navbar />
           {children}
