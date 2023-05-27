@@ -43,7 +43,7 @@ const BlogSection = () => {
       <div className="row container g-2 m-3 ">
         {allBlogs?.map((blogs, key) => {
           return (
-            <div className="col-12 col-md-4 col-lg-4 ">
+            <div className="col-12 col-md-4 col-lg-4 " key={key}>
               <div className="card bg-transparent">
                 <div className="card-body">
                   <div className="card-title fw-bold">{blogs?.title}</div>

@@ -74,7 +74,7 @@ const MyProfile = () => {
       <div className="row g-3 m-4">
         {myPosts?.map((item, key) => {
           return (
-            <div className="col-12 col-lg-4">
+            <div className="col-12 col-lg-4" key={key}>
               <div className="card">
                 <div className="card-body  text-center" key={key}>
                   <h5 className="card-title">{item.title}</h5>

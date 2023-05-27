@@ -1,4 +1,3 @@
-import Image from "next/image";
 import "@styles/globals.css";
 import BlogSection from "@components/BlogSection";
 
@@ -13,7 +12,6 @@ export default function Home() {
           Welcome Everyone!
           <br className="max-md:hidden" />
           <span className="orange_gradient text-center gradient_color">
-            {" "}
             ThoughtTrail
           </span>
         </h1>

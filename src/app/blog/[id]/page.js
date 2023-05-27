@@ -14,7 +14,7 @@ const SinglePost = ({ params }) => {
       setBlogData(res.data[0]);
     };
     fetchBlogData();
-  }, []);
+  }, [params]);
 
   const renderContent = () => {
     return { __html: blogData?.description }; // Pass the blogData.description as HTML content

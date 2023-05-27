@@ -1,15 +1,11 @@
-"use client";
 import axios from "axios";
 import { useState } from "react";
 import { useSession } from "next-auth/react";
 import React from "react";
 import { useRouter } from "next/navigation";
-// import { useAlert } from "react-alert";
 
 const NewBlog = () => {
-  // const alert = useAlert();
   const router = useRouter();
-
   const { data: session } = useSession();
   if (!session?.user) {
     router.push("/");
@@ -20,6 +16,7 @@ const NewBlog = () => {
     description: "",
     creator: session?.user?.id,
   });
+
   const handleBlogSubmit = async (e) => {
     e.preventDefault();
     const descriptionHTML = blogData.description
@@ -46,19 +43,16 @@ const NewBlog = () => {
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
-    setBlogData((preValue) => {
-      return {
-        ...preValue,
-        [name]: value,
-      };
-    });
+    setBlogData((prevValue) => ({
+      ...prevValue,
+      [name]: value,
+    }));
   };
 
   return (
     <section>
       <div className="text-center head_text">
-        {" "}
-        "Craft Your Narrative: Unleash the Power of Words"
+        Craft Your Narrative: Unleash the Power of Words
       </div>
       <div className="d-flex flex-column align-items-center bg-transparent">
         <form className="form w-75  border-0" onSubmit={handleBlogSubmit}>
