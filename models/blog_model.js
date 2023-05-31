@@ -5,6 +5,14 @@ const BlogsSchemas = new mongoose.Schema({
   subtitle: String,
   description: String,
   creator: String,
+  timesOpened: String,
+  image: String,
+  likedBy: [
+    {
+      user_email: String,
+      user_name: String,
+    },
+  ],
 });
 module.exports =
-  mongoose.models.BlogData || mongoose.model("BlogData", BlogsSchemas);
+  mongoose.models.allBlogs || mongoose.model("allBlogs", BlogsSchemas);

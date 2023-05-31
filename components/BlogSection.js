@@ -1,15 +1,25 @@
 "use client";
 import axios from "axios";
+import { useSession } from "next-auth/react";
+
 import Image from "next/image";
 import { useEffect, useState } from "react";
-
+import Link from "next/link";
+import { FcLike, FcLikePlaceholder } from "react-icons/fc";
 const BlogSection = () => {
+  const { data: session } = useSession();
+
   const [allBlogs, setAllBlogs] = useState([]);
+  const [liked, setLiked] = useState(false);
   useEffect(() => {
     const fetchBlogs = async () => {
       try {
         const response = await axios.get("/api/blogs");
         const blogs = response.data;
+        const likedData = blogs[0].likedBy;
+        // const foundObject = likedData.find(
+        //   (obj) => obj.user_email === session?.user?.email
+        // );
 
         // Fetch the creator's name for each blog
         const blogsWithCreator = await Promise.all(
@@ -36,8 +46,17 @@ const BlogSection = () => {
     };
 
     fetchBlogs();
-  }, []);
+  }, [liked]);
 
+  const handlelike = async (id) => {
+    const res = await axios.put(`/api/blogs/${id}`, {
+      user_email: session?.user?.email,
+      user_name: session?.user?.name,
+    });
+    setLiked(true);
+  };
+
+  console.log("dad", allBlogs);
   return (
     <section className="d-flex justify-content-center align-items-center">
       <div className="row container g-2 m-3 ">
@@ -55,7 +74,26 @@ const BlogSection = () => {
                     style={{ borderRadius: "50%" }}
                     alt="profile"
                   />{" "}
-                  <small>{blogs?.creatorName}</small>
+                  <div className="d-flex justify-content-between align-items-center">
+                    <small>{blogs?.creatorName}</small>
+                    <Link
+                      href={`/blog/${blogs._id}`}
+                      className="text-decoration-none text-dark"
+                    >
+                      Read
+                    </Link>
+                    <div>
+                      {blogs.likedBy.find(
+                        (obj) => obj.user_email === session?.user?.email
+                      ) ? (
+                        <FcLike />
+                      ) : (
+                        <FcLikePlaceholder
+                          onClick={() => handlelike(blogs._id)}
+                        />
+                      )}
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>

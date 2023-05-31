@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useSession } from "next-auth/react";
 import React from "react";
 import { useRouter } from "next/navigation";
+import { CldUploadButton } from "next-cloudinary";
 
 const NewBlog = () => {
   const router = useRouter();
@@ -95,6 +96,7 @@ const NewBlog = () => {
             <button type="submit" className="btn btn-outline-dark">
               Submit
             </button>
+            <CldUploadButton uploadPreset="<Upload Preset>" />
           </div>
         </form>
       </div>

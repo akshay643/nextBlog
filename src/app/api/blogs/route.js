@@ -1,12 +1,20 @@
-import BlogData from "@models/blog_model";
+import allBlogs from "@models/blog_model";
 import { connectToDB } from "@utils/db";
 
 export const POST = async (req, res) => {
   try {
     await connectToDB();
-    const { title, subtitle, description, creator } = await req.json();
+    const { title, subtitle, description, creator, timesOpened, image } =
+      await req.json();
 
-    const newBlog = new BlogData({ title, subtitle, description, creator });
+    const newBlog = new allBlogs({
+      title,
+      subtitle,
+      description,
+      creator,
+      timesOpened,
+      image,
+    });
     await newBlog.save();
 
     return new Response("Created", { status: 200 });
@@ -19,9 +27,9 @@ export const GET = async (req, res) => {
   try {
     await connectToDB();
 
-    const allBlogs = await BlogData.find({});
+    const all = await allBlogs.find({});
 
-    return new Response(JSON.stringify(allBlogs), { status: 200 });
+    return new Response(JSON.stringify(all), { status: 200 });
   } catch (error) {
     return new Response("Failed", { status: 400 });
   }
