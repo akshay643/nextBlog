@@ -3,15 +3,15 @@ import axios from "axios";
 import { useState } from "react";
 import { useSession } from "next-auth/react";
 import React from "react";
-import { useRouter } from "next/router";
+// import { useRouter } from "next/router";
 import { CldUploadButton } from "next-cloudinary";
 
 const NewBlog = () => {
-  const router = useRouter();
+  // const router = useRouter();
   const { data: session } = useSession();
-  if (!session?.user) {
-    router.push("/");
-  }
+  // if (!session?.user) {
+  //   // router.push("/");
+  // }
   const [blogData, setBlogData] = useState({
     title: "",
     subtitle: "",
@@ -36,7 +36,7 @@ const NewBlog = () => {
         subtitle: "",
         description: "",
       });
-      router.push("/profile");
+      // router.push("/profile");
       alert(
         "Congratulations! Your Masterpiece is Born: A Journey into the Realm of Creation"
       );
