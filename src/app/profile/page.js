@@ -1,13 +1,14 @@
 "use client";
+
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+// import { useRouter } from "next/navigation";
 import axios from "axios";
 import Link from "next/link";
 import { MdDeleteOutline } from "react-icons/md";
 import { GrView } from "react-icons/gr";
 const MyProfile = () => {
-  const router = useRouter();
+  // const router = useRouter();
   const { data: session } = useSession();
 
   const [myPosts, setMyPosts] = useState([]);
@@ -23,9 +24,9 @@ const MyProfile = () => {
 
     if (session?.user.id) fetchPosts();
   }, [session?.user.id, renderComp]);
-  if (!session?.user) {
-    router.push("/");
-  }
+  // if (!session?.user) {
+  //   // router.push("/");
+  // }
 
   const handleBlogDelete = async (blogId) => {
     const res = await axios.delete(`/api/blogs/${blogId}`);
