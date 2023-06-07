@@ -53,7 +53,11 @@ const BlogSection = () => {
       user_email: session?.user?.email,
       user_name: session?.user?.name,
     });
-    setLiked(true);
+    console.log(res?.data);
+    if (res?.data === "updated") {
+      alert("Your Liked the post");
+      setLiked(true);
+    }
   };
 
   console.log("dad", allBlogs);

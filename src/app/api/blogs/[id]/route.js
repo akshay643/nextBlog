@@ -32,16 +32,13 @@ export const PUT = async (request, { params }) => {
   try {
     await connectToDB();
     const { user_email, user_name } = await request.json();
-    console.log(user_name);
-
     const getUser = await allBlogs.findById({ _id: params.id });
-    console.log(getUser);
     getUser.likedBy.push({
       user_email: user_email,
       user_name: user_name,
     });
     await getUser.save();
-    return new Response(getUser, { status: 200 });
+    return new Response("updated", { status: 200 });
   } catch (error) {
     return new Response("Failed", {
       status: 500,

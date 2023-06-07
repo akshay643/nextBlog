@@ -3,7 +3,7 @@ import axios from "axios";
 import { useState } from "react";
 import { useSession } from "next-auth/react";
 import React from "react";
-import { useRouter } from "next/navigation";
+import { useRouter } from "next/router";
 import { CldUploadButton } from "next-cloudinary";
 
 const NewBlog = () => {
