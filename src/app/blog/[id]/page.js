@@ -10,7 +10,10 @@ const SinglePost = ({ params }) => {
   const { data: session } = useSession();
   useEffect(() => {
     const fetchBlogData = async () => {
-      const res = await axios.get(`/api/blogs/${params?.id}`);
+      const res = await axios.get(
+        // `/api/blogs/${params?.id}`
+        `${$process.env.ROUTE_PATH}/${params?.id}`
+      );
       setBlogData(res.data[0]);
     };
     fetchBlogData();

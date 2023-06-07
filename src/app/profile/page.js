@@ -16,7 +16,9 @@ const MyProfile = () => {
 
   useEffect(() => {
     const fetchPosts = async () => {
-      const response = await fetch(`/api/blogs/usersblog/${session?.user.id}`); //get the posts related to the user
+      const response = await fetch(
+        `${process.env.ROUTE_PATH}/api/blogs/usersblog/${session?.user.id}`
+      ); //get the posts related to the user
       const data = await response.json();
 
       setMyPosts(data);
@@ -29,7 +31,9 @@ const MyProfile = () => {
   // }
 
   const handleBlogDelete = async (blogId) => {
-    const res = await axios.delete(`/api/blogs/${blogId}`);
+    const res = await axios.delete(
+      `${process.env.ROUTE_PATH}/api/blogs/${blogId}`
+    );
     console.log(res);
     if (res.data === "Deleted") {
       alert("deleted");

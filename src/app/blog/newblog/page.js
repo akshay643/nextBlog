@@ -26,10 +26,14 @@ const NewBlog = () => {
       .replace(/(?:\r\n|\r|\n)/g, "<br/>")
       .replace(/\s\s+/g, " ");
 
-    const res = await axios.post("http://localhost:3000/api/blogs", {
-      ...blogData,
-      description: descriptionHTML,
-    });
+    const res = await axios.post(
+      // "http://localhost:3000/api/blogs"
+      `${process.env.ROUTE_PATH}/api/blogs`,
+      {
+        ...blogData,
+        description: descriptionHTML,
+      }
+    );
     if (res?.data === "Created") {
       setBlogData({
         title: "",

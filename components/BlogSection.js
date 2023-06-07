@@ -14,7 +14,7 @@ const BlogSection = () => {
   useEffect(() => {
     const fetchBlogs = async () => {
       try {
-        const response = await axios.get("/api/blogs");
+        const response = await axios.get(`${process.env.ROUTE_PATH}/api/blogs`);
         const blogs = response.data;
         const likedData = blogs[0].likedBy;
         // const foundObject = likedData.find(
@@ -25,7 +25,7 @@ const BlogSection = () => {
         const blogsWithCreator = await Promise.all(
           blogs.map(async (blog) => {
             const creatorResponse = await axios.get(
-              `/api/user/${blog.creator}`
+              `${process.env.ROUTE_PATH}/api/user/${blog.creator}`
             );
             const creator = creatorResponse.data;
 
