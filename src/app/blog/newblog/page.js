@@ -1,4 +1,4 @@
-"use client";
+"use server";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
