@@ -25,11 +25,6 @@ const NewBlog = () => {
 
   const handleBlogSubmit = async (e) => {
     e.preventDefault();
-    // const descriptionHTML = blogData.description
-    //   .replace(/\n/g, "<br/>")
-    //   .replace(/(?:\r\n|\r|\n)/g, "<br/>")
-    //   .replace(/\s\s+/g, " ");
-
     const res = await axios.post(`${BaseURL}/api/blogs`, {
       ...blogData,
       description: value,
@@ -40,7 +35,7 @@ const NewBlog = () => {
         subtitle: "",
         description: "",
       });
-      router.push("/profile");
+      // router.push("/profile");
       alert(
         "Congratulations! Your Masterpiece is Born: A Journey into the Realm of Creation"
       );

@@ -1,6 +1,6 @@
 "use client";
 import axios from "axios";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import React from "react";
 import { useRouter } from "next/navigation";
@@ -11,9 +11,11 @@ const NewBlog = () => {
   const router = useRouter();
 
   const { data: session } = useSession();
-  if (!session?.user) {
-    router.push("/");
-  }
+  useEffect(() => {
+    if (!session?.user) {
+      router.push("/");
+    }
+  }, []);
   const [eventData, setEventData] = useState({
     event_id: randomString({ length: 5 }),
     event_title: "",
