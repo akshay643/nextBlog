@@ -6,6 +6,8 @@ import React from "react";
 import { useRouter } from "next/navigation";
 import ReactQuill from "react-quill";
 import { BaseURL } from "@utils/axiosRoute";
+const isBrowser = typeof window !== "undefined";
+
 // import "react-quill/dist/quill.snow.css";
 const NewBlog = () => {
   const { data: session } = useSession();
@@ -52,7 +54,7 @@ const NewBlog = () => {
     }));
   };
 
-  return (
+  return isBrowser ? (
     <section>
       <div className="text-center head_text">
         Craft Your Narrative: Unleash the Power of Words
@@ -106,7 +108,7 @@ const NewBlog = () => {
         </form>
       </div>
     </section>
-  );
+  ) : null;
 };
 
 export default NewBlog;
