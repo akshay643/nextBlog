@@ -17,7 +17,7 @@ const NewBlog = () => {
     if (!session?.user) {
       router.push("/");
     }
-    const document = window.document;
+    import("react-quill/dist/quill.snow.css");
   }, []);
   const [blogData, setBlogData] = useState({
     title: "",
