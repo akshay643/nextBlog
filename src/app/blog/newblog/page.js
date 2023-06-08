@@ -4,10 +4,10 @@ import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import React from "react";
 import { useRouter } from "next/navigation";
-import ReactQuill from "react-quill";
 import { BaseURL } from "@utils/axiosRoute";
-const isBrowser = typeof window !== "undefined";
+const ReactQuill = dynamic(() => import("react-quill"), { ssr: false });
 
+import dynamic from "next/dist/shared/lib/dynamic";
 // import "react-quill/dist/quill.snow.css";
 const NewBlog = () => {
   const { data: session } = useSession();
@@ -32,7 +32,7 @@ const NewBlog = () => {
     e.preventDefault();
     const res = await axios.post(`${BaseURL}/api/blogs`, {
       ...blogData,
-      description: "",
+      description: value,
     });
     if (res?.data === "Created") {
       setBlogData({
@@ -54,7 +54,7 @@ const NewBlog = () => {
     }));
   };
 
-  return isBrowser ? (
+  return (
     <section>
       <div className="text-center head_text">
         Craft Your Narrative: Unleash the Power of Words
@@ -94,7 +94,12 @@ const NewBlog = () => {
               className="form-control bg-transparent"
             />
           </label> */}
-
+          <ReactQuill
+            style={{ margin: "1rem" }}
+            theme="snow"
+            value={value}
+            onChange={(e) => setValue(e)}
+          />
           <div className="text-center mt-4">
             <button type="submit" className="btn btn-outline-dark">
               Submit
@@ -103,7 +108,7 @@ const NewBlog = () => {
         </form>
       </div>
     </section>
-  ) : null;
+  );
 };
 
 export default NewBlog;
