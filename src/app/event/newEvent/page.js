@@ -55,7 +55,6 @@ const NewBlog = () => {
     }));
   };
 
-  console.log("value", value);
   return (
     <section>
       <div className="text-center head_text">

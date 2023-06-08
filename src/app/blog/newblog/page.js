@@ -1,6 +1,6 @@
 "use client";
 import axios from "axios";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import React from "react";
 import { useRouter } from "next/navigation";
@@ -13,9 +13,11 @@ const NewBlog = () => {
 
   const router = useRouter();
   const { data: session } = useSession();
-  if (!session?.user) {
-    router.push("/");
-  }
+  useEffect(() => {
+    if (!session?.user) {
+      router.push("/");
+    }
+  });
   const [blogData, setBlogData] = useState({
     title: "",
     subtitle: "",
@@ -35,7 +37,7 @@ const NewBlog = () => {
         subtitle: "",
         description: "",
       });
-      // router.push("/profile");
+      router.push("/profile");
       alert(
         "Congratulations! Your Masterpiece is Born: A Journey into the Realm of Creation"
       );
