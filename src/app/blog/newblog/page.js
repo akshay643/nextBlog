@@ -5,9 +5,9 @@ import { useSession } from "next-auth/react";
 import React from "react";
 import { useRouter } from "next/navigation";
 import { BaseURL } from "@utils/axiosRoute";
+import dynamic from "next/dist/shared/lib/dynamic";
 const ReactQuill = dynamic(() => import("react-quill"), { ssr: false });
 
-import dynamic from "next/dist/shared/lib/dynamic";
 // import "react-quill/dist/quill.snow.css";
 const NewBlog = () => {
   const { data: session } = useSession();
