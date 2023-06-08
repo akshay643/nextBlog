@@ -1,4 +1,4 @@
-"use server";
+"use client";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
@@ -38,7 +38,6 @@ const NewBlog = () => {
         subtitle: "",
         description: "",
       });
-      router.push("/profile");
       alert(
         "Congratulations! Your Masterpiece is Born: A Journey into the Realm of Creation"
       );
