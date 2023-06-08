@@ -17,7 +17,7 @@ const NewBlog = () => {
     if (!session?.user) {
       router.push("/");
     }
-    document.title = "Sling Academy";
+    import("bootstrap/dist/js/bootstrap.js");
   }, []);
   const [blogData, setBlogData] = useState({
     title: "",
