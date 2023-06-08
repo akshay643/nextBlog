@@ -17,7 +17,7 @@ const NewBlog = () => {
     if (!session?.user) {
       router.push("/");
     }
-    import("bootstrap/dist/js/bootstrap.js");
+    const document = window.document;
   }, []);
   const [blogData, setBlogData] = useState({
     title: "",
