@@ -4,7 +4,6 @@ import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import React from "react";
 import { useRouter } from "next/navigation";
-import { CldUploadButton } from "next-cloudinary";
 import ReactQuill from "react-quill";
 import { BaseURL } from "@utils/axiosRoute";
 import "react-quill/dist/quill.snow.css";
@@ -13,11 +12,13 @@ const NewBlog = () => {
 
   const router = useRouter();
   const { data: session } = useSession();
+
   useEffect(() => {
     if (!session?.user) {
       router.push("/");
     }
-  });
+    document.title = "Sling Academy";
+  }, []);
   const [blogData, setBlogData] = useState({
     title: "",
     subtitle: "",
