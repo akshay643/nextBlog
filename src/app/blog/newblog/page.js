@@ -6,12 +6,12 @@ import React from "react";
 import { useRouter } from "next/navigation";
 import ReactQuill from "react-quill";
 import { BaseURL } from "@utils/axiosRoute";
-import "react-quill/dist/quill.snow.css";
+// import "react-quill/dist/quill.snow.css";
 const NewBlog = () => {
+  const { data: session } = useSession();
   const [value, setValue] = useState("");
 
   const router = useRouter();
-  const { data: session } = useSession();
 
   useEffect(() => {
     if (!session?.user) {
