@@ -97,7 +97,7 @@ const NewBlog = () => {
             style={{ margin: "1rem" }}
             theme="snow"
             value={value}
-            onChange={(html) => setValue(html)}
+            onChange={(e) => setValue(e)}
           />
           <div className="text-center mt-4">
             <button type="submit" className="btn btn-outline-dark">
