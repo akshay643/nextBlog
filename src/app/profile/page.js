@@ -16,6 +16,9 @@ const MyProfile = () => {
   const [renderComp, setRenderComp] = useState(false);
 
   useEffect(() => {
+    if (!session?.user) {
+      router.push("/");
+    }
     const fetchPosts = async () => {
       const response = await fetch(
         `${BaseURL}/api/blogs/usersblog/${session?.user.id}`
@@ -27,9 +30,6 @@ const MyProfile = () => {
 
     if (session?.user.id) fetchPosts();
   }, [session?.user.id, renderComp]);
-  if (!session?.user) {
-    router.push("/");
-  }
 
   const handleBlogDelete = async (blogId) => {
     const res = await axios.delete(`${BaseURL}/api/blogs/${blogId}`);
