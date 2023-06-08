@@ -3,15 +3,19 @@ import axios from "axios";
 import { useState } from "react";
 import { useSession } from "next-auth/react";
 import React from "react";
-// import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import { CldUploadButton } from "next-cloudinary";
-
+import ReactQuill from "react-quill";
+import { BaseURL } from "@utils/axiosRoute";
+import "react-quill/dist/quill.snow.css";
 const NewBlog = () => {
-  // const router = useRouter();
+  const [value, setValue] = useState("");
+
+  const router = useRouter();
   const { data: session } = useSession();
-  // if (!session?.user) {
-  //   // router.push("/");
-  // }
+  if (!session?.user) {
+    router.push("/");
+  }
   const [blogData, setBlogData] = useState({
     title: "",
     subtitle: "",
@@ -21,26 +25,22 @@ const NewBlog = () => {
 
   const handleBlogSubmit = async (e) => {
     e.preventDefault();
-    const descriptionHTML = blogData.description
-      .replace(/\n/g, "<br/>")
-      .replace(/(?:\r\n|\r|\n)/g, "<br/>")
-      .replace(/\s\s+/g, " ");
+    // const descriptionHTML = blogData.description
+    //   .replace(/\n/g, "<br/>")
+    //   .replace(/(?:\r\n|\r|\n)/g, "<br/>")
+    //   .replace(/\s\s+/g, " ");
 
-    const res = await axios.post(
-      // "http://localhost:3000/api/blogs"
-      `${process.env.ROUTE_PATH}/api/blogs`,
-      {
-        ...blogData,
-        description: descriptionHTML,
-      }
-    );
+    const res = await axios.post(`${BaseURL}/api/blogs`, {
+      ...blogData,
+      description: value,
+    });
     if (res?.data === "Created") {
       setBlogData({
         title: "",
         subtitle: "",
         description: "",
       });
-      // router.push("/profile");
+      router.push("/profile");
       alert(
         "Congratulations! Your Masterpiece is Born: A Journey into the Realm of Creation"
       );
@@ -82,25 +82,29 @@ const NewBlog = () => {
               className="form-control bg-transparent"
             />
           </label>
-          <label className="form-control bg-transparent border-0">
+          {/* <label className="form-control bg-transparent border-0">
             Your Thoughts:
             <textarea
               required
               value={blogData?.description}
               onChange={handleInputChange}
               name="description"
-              maxLength={500}
               rows={10}
               style={{ whiteSpace: "pre-wrap" }}
               placeholder="max. 500 characters allowed"
               className="form-control bg-transparent"
             />
-          </label>
-          <div className="text-center mt-3">
+          </label> */}
+          <ReactQuill
+            style={{ margin: "1rem" }}
+            theme="snow"
+            value={value}
+            onChange={(html) => setValue(html)}
+          />
+          <div className="text-center mt-4">
             <button type="submit" className="btn btn-outline-dark">
               Submit
             </button>
-            <CldUploadButton uploadPreset="<Upload Preset>" />
           </div>
         </form>
       </div>

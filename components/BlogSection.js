@@ -6,6 +6,7 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { FcLike, FcLikePlaceholder } from "react-icons/fc";
+import { BaseURL } from "@utils/axiosRoute";
 const BlogSection = () => {
   const { data: session } = useSession();
 
@@ -14,7 +15,7 @@ const BlogSection = () => {
   useEffect(() => {
     const fetchBlogs = async () => {
       try {
-        const response = await axios.get(`${process.env.ROUTE_PATH}/api/blogs`);
+        const response = await axios.get(`${BaseURL}/api/blogs`);
         const blogs = response.data;
         const likedData = blogs[0].likedBy;
         // const foundObject = likedData.find(
@@ -25,7 +26,7 @@ const BlogSection = () => {
         const blogsWithCreator = await Promise.all(
           blogs.map(async (blog) => {
             const creatorResponse = await axios.get(
-              `${process.env.ROUTE_PATH}/api/user/${blog.creator}`
+              `${BaseURL}/api/user/${blog.creator}`
             );
             const creator = creatorResponse.data;
 
@@ -49,7 +50,7 @@ const BlogSection = () => {
   }, [liked]);
 
   const handlelike = async (id) => {
-    const res = await axios.put(`/api/blogs/${id}`, {
+    const res = await axios.put(`${BaseURL}/api/blogs/${id}`, {
       user_email: session?.user?.email,
       user_name: session?.user?.name,
     });
@@ -71,18 +72,21 @@ const BlogSection = () => {
                 <div className="card-body">
                   <div className="card-title fw-bold">{blogs?.title}</div>
                   <div className="card-title fw-light">{blogs?.subtitle}</div>
-                  <Image
-                    src={blogs.creatorImage}
-                    width={20}
-                    height={20}
-                    style={{ borderRadius: "50%" }}
-                    alt="profile"
-                  />{" "}
-                  <div className="d-flex justify-content-between align-items-center">
-                    <small>{blogs?.creatorName}</small>
+
+                  <div className="d-flex justify-content-between align-items-baseline">
+                    <div>
+                      <Image
+                        src={blogs.creatorImage}
+                        width={20}
+                        height={20}
+                        style={{ borderRadius: "50%" }}
+                        alt="profile"
+                      />{" "}
+                      <small>{blogs?.creatorName}</small>
+                    </div>
                     <Link
                       href={`/blog/${blogs._id}`}
-                      className="text-decoration-none text-dark"
+                      className="text-decoration-none btn btn-dark text-white text-dark"
                     >
                       Read
                     </Link>
@@ -90,7 +94,9 @@ const BlogSection = () => {
                       {blogs.likedBy.find(
                         (obj) => obj.user_email === session?.user?.email
                       ) ? (
-                        <FcLike />
+                        <>
+                          <FcLike /> <small>{blogs.likedBy.length}</small>
+                        </>
                       ) : (
                         <FcLikePlaceholder
                           onClick={() => handlelike(blogs._id)}

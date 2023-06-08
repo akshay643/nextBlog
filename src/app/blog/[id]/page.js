@@ -4,16 +4,13 @@ import { useRouter, useSearchParams } from "next/navigation";
 import axios from "axios";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
-
+import { BaseURL } from "@utils/axiosRoute";
 const SinglePost = ({ params }) => {
   const [blogData, setBlogData] = useState([]);
   const { data: session } = useSession();
   useEffect(() => {
     const fetchBlogData = async () => {
-      const res = await axios.get(
-        // `/api/blogs/${params?.id}`
-        `${$process.env.ROUTE_PATH}/${params?.id}`
-      );
+      const res = await axios.get(`${BaseURL}/api/blogs/${params?.id}`);
       setBlogData(res.data[0]);
     };
     fetchBlogData();

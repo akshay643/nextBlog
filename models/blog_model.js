@@ -15,4 +15,4 @@ const BlogsSchemas = new mongoose.Schema({
   ],
 });
 module.exports =
-  mongoose.models.allBlogs || mongoose.model("allBlogs", BlogsSchemas);
+  mongoose.models["allBlogs"] || mongoose.model("allBlogs", BlogsSchemas);

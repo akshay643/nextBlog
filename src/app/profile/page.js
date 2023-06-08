@@ -2,13 +2,14 @@
 
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
-// import { useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import axios from "axios";
 import Link from "next/link";
 import { MdDeleteOutline } from "react-icons/md";
 import { GrView } from "react-icons/gr";
+import { BaseURL } from "@utils/axiosRoute";
 const MyProfile = () => {
-  // const router = useRouter();
+  const router = useRouter();
   const { data: session } = useSession();
 
   const [myPosts, setMyPosts] = useState([]);
@@ -17,7 +18,7 @@ const MyProfile = () => {
   useEffect(() => {
     const fetchPosts = async () => {
       const response = await fetch(
-        `${process.env.ROUTE_PATH}/api/blogs/usersblog/${session?.user.id}`
+        `${BaseURL}/api/blogs/usersblog/${session?.user.id}`
       ); //get the posts related to the user
       const data = await response.json();
 
@@ -26,14 +27,12 @@ const MyProfile = () => {
 
     if (session?.user.id) fetchPosts();
   }, [session?.user.id, renderComp]);
-  // if (!session?.user) {
-  //   // router.push("/");
-  // }
+  if (!session?.user) {
+    router.push("/");
+  }
 
   const handleBlogDelete = async (blogId) => {
-    const res = await axios.delete(
-      `${process.env.ROUTE_PATH}/api/blogs/${blogId}`
-    );
+    const res = await axios.delete(`${BaseURL}/api/blogs/${blogId}`);
     console.log(res);
     if (res.data === "Deleted") {
       alert("deleted");
