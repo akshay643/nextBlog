@@ -6,7 +6,6 @@ export const POST = async (req, res) => {
     await connectToDB();
 
     const { title, description, code, creator, likedBy } = await req.json();
-    console.log(description);
 
     const newCode = new CodeSnippet({
       title,
