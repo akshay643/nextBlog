@@ -39,9 +39,7 @@ const Nav = () => {
             <Link href="/profile">
               <span className="btn btn-outline-dark mx-2">Profile</span>
             </Link>
-            <Link href="/event">
-              <span className="btn btn-outline-dark mx-2">Events</span>
-            </Link>
+
             <button
               type="button"
               onClick={signOut}

@@ -40,6 +40,8 @@ const NewBlog = () => {
         subtitle: "",
         description: "",
       });
+      router.push("/profile");
+
       alert(
         "Congratulations! Your Masterpiece is Born: A Journey into the Realm of Creation"
       );
