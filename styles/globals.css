@@ -187,3 +187,28 @@ html {
   background: transparent;
   border: 0;
 }
+
+.snippet_card {
+  cursor: pointer;
+}
+
+.sidenav {
+  width: 12rem;
+  background-color: lightgrey;
+  position: absolute;
+  top: 0;
+  height: 100%;
+  left: -12rem;
+  transition: 0.4s ease-in;
+}
+
+.sidenav_visible {
+  left: 12rem;
+  width: 24rem;
+  background-color: lightgrey;
+  position: absolute;
+  top: 0;
+  height: 100%;
+  left: 0;
+  transition: 0.4s ease-in;
+}

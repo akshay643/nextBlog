@@ -33,7 +33,6 @@ const MyProfile = () => {
 
   const handleBlogDelete = async (blogId) => {
     const res = await axios.delete(`${BaseURL}/api/blogs/${blogId}`);
-    console.log(res);
     if (res.data === "Deleted") {
       alert("deleted");
       setRenderComp(!renderComp);

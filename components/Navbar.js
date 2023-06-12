@@ -10,7 +10,6 @@ const Nav = () => {
 
   const [providers, setProviders] = useState(null);
   const [toggleDropdown, setToggleDropdown] = useState(false);
-  console.log("data", session);
 
   useEffect(() => {
     (async () => {
@@ -39,6 +38,9 @@ const Nav = () => {
             <Link href="/profile">
               <span className="btn btn-outline-dark mx-2">Profile</span>
             </Link>
+            <Link href="/snippet_shrine">
+              <span className="btn btn-outline-dark mx-2">Snippets</span>
+            </Link>
 
             <button
               type="button"
@@ -50,15 +52,18 @@ const Nav = () => {
           </div>
         ) : (
           <>
+            <Link href="/snippet_shrine">
+              <span className="btn btn-outline-dark mx-2">Snippets</span>
+            </Link>
             {providers &&
               Object.values(providers).map((provider) => (
                 <button
-                  type="button"
+                  type="btn btn-outline-secondary btn-sm"
                   key={provider.name}
                   onClick={() => {
                     signIn(provider.id);
                   }}
-                  className="btn btn-outline-dark"
+                  className="btn btn-no-outline-dark"
                 >
                   Sign in
                 </button>

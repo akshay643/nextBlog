@@ -23,24 +23,24 @@ const BlogSection = () => {
         // );
 
         // Fetch the creator's name for each blog
-        const blogsWithCreator = await Promise.all(
-          blogs.map(async (blog) => {
-            const creatorResponse = await axios.get(
-              `${BaseURL}/api/user/${blog.creator}`
-            );
-            const creator = creatorResponse.data;
+        // console.log("los", blogs);
+        // console.log("blogs", blogs);
+        // const blogsWithCreator = await Promise.all(
+        //   blogs.map(async (blog) => {
+        //     const creatorResponse = await axios.get(
+        //       `${BaseURL}/api/user/${blog.creator}`
+        //     );
+        //     const creator = creatorResponse.data;
 
-            console.log("all", creator);
+        //     return {
+        //       ...blog,
+        //       creatorName: creator[0].username,
+        //       creatorImage: creator[0].image,
+        //     };
+        //   })
+        // );
 
-            return {
-              ...blog,
-              creatorName: creator[0].username,
-              creatorImage: creator[0].image,
-            };
-          })
-        );
-
-        setAllBlogs(blogsWithCreator);
+        setAllBlogs(blogs);
       } catch (error) {
         console.log(error);
       }
@@ -55,12 +55,11 @@ const BlogSection = () => {
       user_name: session?.user?.name,
     });
     if (res?.data === "updated") {
-      setLiked(true);
       alert("Your Liked the post");
+      setLiked(true);
     }
   };
 
-  console.log("dad", allBlogs);
   return (
     <section className="d-flex justify-content-center align-items-center">
       <div className="row container g-2 m-3 ">
@@ -73,7 +72,7 @@ const BlogSection = () => {
                   <div className="card-title fw-light">{blogs?.subtitle}</div>
 
                   <div className="d-flex justify-content-between align-items-baseline">
-                    <div>
+                    {/* <div>
                       <Image
                         src={blogs.creatorImage}
                         width={20}
@@ -88,7 +87,7 @@ const BlogSection = () => {
                       className="text-decoration-none btn btn-dark text-white text-dark"
                     >
                       Read
-                    </Link>
+                    </Link> */}
                     <div>
                       {blogs.likedBy.find(
                         (obj) => obj.user_email === session?.user?.email

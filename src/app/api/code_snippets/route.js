@@ -1,18 +1,21 @@
-import BlogsData from "@models/blog_model";
+import CodeSnippet from "@models/code_snippets_Model";
 import { connectToDB } from "@utils/db";
 
 export const POST = async (req, res) => {
   try {
     await connectToDB();
-    const { title, subtitle, description, creator, likedBy } = await req.json();
-    const newBlog = new BlogsData({
+
+    const { title, description, code, creator, likedBy } = await req.json();
+    console.log(description);
+
+    const newCode = new CodeSnippet({
       title,
-      subtitle,
       description,
+      code,
       creator,
       likedBy,
     });
-    await newBlog.save();
+    await newCode.save();
 
     return new Response("Created", { status: 200 });
   } catch (error) {
@@ -23,8 +26,8 @@ export const POST = async (req, res) => {
 export const GET = async (req, res) => {
   try {
     await connectToDB();
-    const allBlogsData = await BlogsData.find({});
-    return new Response(JSON.stringify(allBlogsData), { status: 200 });
+    const allCodeSnippet = await CodeSnippet.find({});
+    return new Response(JSON.stringify(allCodeSnippet), { status: 200 });
   } catch (error) {
     return new Response("Failed", { status: 400 });
   }
