@@ -89,88 +89,100 @@ const Snippets = () => {
   }, [viewCode]);
 
   return (
-    <section>
-      <div className="row m-2 overflow-auto">
-        <div className="col-4">
-          <div className="row">
-            <div className="col-12 col-lg-6 text-center text-lg-start">
-              {" "}
-              <h5>Getting started with snippets</h5>
-            </div>
-            <div className="col-12 col-lg-6 text-center text-lg-end">
-              {session?.user && (
-                <button
-                  className="btn btn-outline-secondary"
-                  onClick={() => setSideBar(!sidebar)}
+    <>
+      <div
+        className="d-flex justify-content-between align-items-center bg-dark"
+        style={{ height: "5rem" }}
+      >
+        <h5 className="text-white mx-4">Getting started with snippets</h5>
+        {session?.user && (
+          <button
+            className="btn mx-4 btn-outline-secondary"
+            onClick={() => setSideBar(!sidebar)}
+          >
+            {" "}
+            Create Snippet
+          </button>
+        )}
+      </div>
+      <div style={{ width: "100%" }} background={{ color: "#9d94d3" }}>
+        <div className="row">
+          <div className="col-lg-4 col-12">
+            {getCode?.map((code, key) => {
+              return (
+                <div
+                  className="snippet_card  card "
+                  key={key}
+                  onClick={() => setViewCode(code)}
                 >
-                  {" "}
-                  Create Snippet
-                </button>
-              )}
-            </div>
+                  <div
+                    className="card-body rounded"
+                    style={{
+                      overflow: "hidden",
+                      background: "#AC92EC                  ",
+                    }}
+                  >
+                    <h5 className="card-title text-dark">{code.title}</h5>
+                    <h6 className="card-subtitle text-dark">
+                      {code.description}
+                    </h6>
+                    {/* <small className="card-text">{code.code}</small> */}
+                  </div>
+                </div>
+              );
+            })}
           </div>
-
-          {getCode?.map((code, key) => {
-            return (
-              <div
-                className="snippet_card m-1 card p-1"
-                key={key}
-                onClick={() => setViewCode(code)}
-              >
-                <div className="card-body" style={{ overflow: "hidden" }}>
-                  <h5 className="card-title">{code.title}</h5>
-                  <h6 className="card-subtitle text-muted">
-                    {code.description}
-                  </h6>
-                  {/* <small className="card-text">{code.code}</small> */}
-                </div>
-              </div>
-            );
-          })}
-        </div>
-        <div className="col-8 ">
-          {getCode ? (
-            <>
-              <div>
-                <h5>{viewCode?.title}</h5>
-              </div>
-
-              <div
-                className="p-4 card"
-                style={{
-                  height: "100%",
-                  width: "100%",
-                  borderRadius: "10px",
-                  border: "1px solid lightgrey",
-                }}
-              >
-                <div className="row">
-                  <div className="col-12 col-lg-6 text-center text-lg-start">
-                    {" "}
-                    <h6 className="text-muted"> {viewCode?.description}</h6>
-                  </div>
-                  <div className="col-12 col-lg-6 text-center text-lg-end">
-                    {" "}
-                    <CopyToClipboard
-                      onCopy={onCopy}
-                      text={viewCode?.code || viewCode?.__html}
-                    >
-                      <button className="btn btn-sm btn-info">
-                        Copy to clipboard
-                      </button>
-                    </CopyToClipboard>
-                  </div>
+          <div
+            className="col-lg-8 col-12 p-4 rounded"
+            style={{ background: "#686194" }}
+          >
+            {getCode ? (
+              <>
+                <div>
+                  <h3 style={{ color: "#ccc4ff" }}>{viewCode?.title}</h3>
                 </div>
 
-                <code
-                  dangerouslySetInnerHTML={renderContent()} // Render the content with line breaks and lists
-                  className=""
-                ></code>
-              </div>
-            </>
-          ) : (
-            "Not Selected Anyone"
-          )}
+                <div
+                  style={{
+                    height: "100%",
+                    width: "100%",
+                    borderRadius: "10px",
+                    color: "white",
+                  }}
+                >
+                  <div className="row ">
+                    <div className="col-12 col-lg-6 my-3 text-center text-lg-start">
+                      {" "}
+                      <h6>{viewCode?.description}</h6>
+                    </div>
+                    <div className="col-12 col-lg-6 text-center text-lg-end">
+                      {" "}
+                      <CopyToClipboard
+                        onCopy={onCopy}
+                        text={viewCode?.code || viewCode?.__html}
+                      >
+                        <button
+                          className="btn btn-sm"
+                          style={{ color: "#78d6dc" }}
+                        >
+                          Copy to clipboard
+                        </button>
+                      </CopyToClipboard>
+                    </div>
+                  </div>
+                  <small className="fs-4 fw-bold text-decoration-underline">
+                    code:
+                  </small>
+                  <code
+                    dangerouslySetInnerHTML={renderContent()} // Render the content with line breaks and lists
+                    className="text-white"
+                  ></code>
+                </div>
+              </>
+            ) : (
+              "Not Selected Anyone"
+            )}
+          </div>
         </div>
       </div>
 
@@ -219,7 +231,7 @@ const Snippets = () => {
           </div>
         </form>
       </div>
-    </section>
+    </>
   );
 };
 
