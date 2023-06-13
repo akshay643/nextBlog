@@ -81,13 +81,13 @@ const BlogSection = () => {
                         alt="profile"
                       />{" "}
                       <small>{blogs?.creatorName}</small>
-                    </div>
+                    </div>*/}
                     <Link
                       href={`/blog/${blogs._id}`}
                       className="text-decoration-none btn btn-dark text-white text-dark"
                     >
                       Read
-                    </Link> */}
+                    </Link>
                     <div>
                       {blogs.likedBy.find(
                         (obj) => obj.user_email === session?.user?.email
