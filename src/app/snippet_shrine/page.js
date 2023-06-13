@@ -8,8 +8,58 @@ import dynamic from "next/dist/shared/lib/dynamic";
 import axios from "axios";
 import { BaseURL } from "@utils/axiosRoute";
 const ReactQuill = dynamic(() => import("react-quill"), { ssr: false });
+const Quill = dynamic(() => import("react-quill"), { ssr: false });
 import { CopyToClipboard } from "react-copy-to-clipboard";
+import "react-quill/dist/quill.snow.css";
+import "quill/dist/quill.core.css";
+import "quill/dist/quill.snow.css";
 
+const colors = [
+  "#000000",
+  "#e60000",
+  "#ff9900",
+  "#ffff00",
+  "#008a00",
+  "#0066cc",
+  "#9933ff",
+  "#ffffff",
+  "#facccc",
+  "#ffebcc",
+  "#ffffcc",
+  "#cce8cc",
+  "#cce0f5",
+  "#ebd6ff",
+  "#bbbbbb",
+  "#f06666",
+  "#ffc266",
+  "#ffff66",
+  "#66b966",
+  "#66a3e0",
+  "#c285ff",
+  "#888888",
+  "#a10000",
+  "#b26b00",
+  "#b2b200",
+  "#006100",
+  "#0047b2",
+  "#6b24b2",
+];
+
+const toolbarOptions = [
+  ["bold", "italic", "underline", "strike"],
+  ["blockquote", "code-block"],
+  [{ header: 1 }, { header: 2 }],
+  [{ list: "ordered" }, { list: "bullet" }],
+  [{ script: "sub" }, { script: "super" }],
+  [{ indent: "-1" }, { indent: "+1" }],
+  [{ direction: "rtl" }],
+  [{ size: ["small", false, "large", "huge"] }],
+  [{ header: [1, 2, 3, 4, 5, 6, false] }],
+  [{ color: colors }, { background: [] }],
+  [{ font: [] }],
+  [{ align: [] }],
+  ["clean"],
+];
 const Snippets = () => {
   const [sidebar, setSideBar] = useState(false);
   const [codeValue, setCodeValue] = useState("");
@@ -18,7 +68,13 @@ const Snippets = () => {
   const { data: session } = useSession();
   const [viewCode, setViewCode] = useState(getCode[0]);
   const router = useRouter();
+  const ColorPicker = () => {
+    const ColorAttributor = Quill.import("attributors/class/color");
+    ColorAttributor.whitelist = colors;
+    Quill.register(ColorAttributor, true);
 
+    return null;
+  };
   const fetchCodeSnippets = async () => {
     const res = await axios.get(`${BaseURL}/api/code_snippets`);
     console.log("res.data", res);
@@ -90,8 +146,9 @@ const Snippets = () => {
 
   return (
     <>
+      {/* ==========Heading== */}
       <div
-        className="d-flex justify-content-between align-items-center bg-dark"
+        className="d-flex w-100 justify-content-between align-items-center bg-dark"
         style={{ height: "5rem" }}
       >
         <h5 className="text-white mx-4">Getting started with snippets</h5>
@@ -105,86 +162,77 @@ const Snippets = () => {
           </button>
         )}
       </div>
-      <div style={{ width: "100%" }} background={{ color: "#9d94d3" }}>
-        <div className="row">
-          <div className="col-lg-4 col-12">
-            {getCode?.map((code, key) => {
-              return (
-                <div
-                  className="snippet_card  card "
-                  key={key}
-                  onClick={() => setViewCode(code)}
-                >
-                  <div
-                    className="card-body rounded"
-                    style={{
-                      overflow: "hidden",
-                      background: "#AC92EC                  ",
-                    }}
-                  >
-                    <h5 className="card-title text-dark">{code.title}</h5>
-                    <h6 className="card-subtitle text-dark">
-                      {code.description}
-                    </h6>
-                    {/* <small className="card-text">{code.code}</small> */}
+
+      {/* ==========Snippets */}
+
+      <div className="row container-fluid">
+        <div className="col-6">
+          {getCode?.map((code, key) => {
+            return (
+              <div
+                style={{ background: "#AC92EC" }}
+                className="border m-0 p-3 rounded"
+                key={key}
+                onClick={() => setViewCode(code)}
+              >
+                <h5 className="card-title text-dark">{code.title}</h5>
+                <h6 className="card-subtitle text-dark">{code.description}</h6>
+                {/* <small className="card-text">{code.code}</small> */}
+              </div>
+            );
+          })}
+        </div>
+        <div className="col-6 p-3 rounded" style={{ background: "#686194" }}>
+          {getCode ? (
+            <>
+              <div>
+                <h3 style={{ color: "#ccc4ff" }}>{viewCode?.title}</h3>
+              </div>
+
+              <div
+                style={{
+                  height: "100%",
+                  width: "100%",
+                  borderRadius: "10px",
+                  color: "white",
+                }}
+              >
+                <div className="row ">
+                  <div className="col-12 col-lg-6 my-3 text-center text-lg-start text-decoration-underline">
+                    {" "}
+                    <h6>{viewCode?.description}</h6>
                   </div>
-                </div>
-              );
-            })}
-          </div>
-          <div
-            className="col-lg-8 col-12 p-4 rounded"
-            style={{ background: "#686194" }}
-          >
-            {getCode ? (
-              <>
-                <div>
-                  <h3 style={{ color: "#ccc4ff" }}>{viewCode?.title}</h3>
+                  <div className="col-12 col-lg-6 text-center text-lg-end">
+                    {" "}
+                    <CopyToClipboard
+                      onCopy={onCopy}
+                      text={viewCode?.code || viewCode?.__html}
+                    >
+                      <button
+                        className="btn btn-sm btn-outline-info text-white"
+                        style={{ color: "#78d6dc" }}
+                      >
+                        Copy to clipboard
+                      </button>
+                    </CopyToClipboard>
+                  </div>
                 </div>
 
-                <div
-                  style={{
-                    height: "100%",
-                    width: "100%",
-                    borderRadius: "10px",
-                    color: "white",
-                  }}
-                >
-                  <div className="row ">
-                    <div className="col-12 col-lg-6 my-3 text-center text-lg-start">
-                      {" "}
-                      <h6>{viewCode?.description}</h6>
-                    </div>
-                    <div className="col-12 col-lg-6 text-center text-lg-end">
-                      {" "}
-                      <CopyToClipboard
-                        onCopy={onCopy}
-                        text={viewCode?.code || viewCode?.__html}
-                      >
-                        <button
-                          className="btn btn-sm"
-                          style={{ color: "#78d6dc" }}
-                        >
-                          Copy to clipboard
-                        </button>
-                      </CopyToClipboard>
-                    </div>
-                  </div>
-                  <small className="fs-4 fw-bold text-decoration-underline">
-                    code:
-                  </small>
-                  <code
-                    dangerouslySetInnerHTML={renderContent()} // Render the content with line breaks and lists
-                    className="text-white"
-                  ></code>
-                </div>
-              </>
-            ) : (
-              "Not Selected Anyone"
-            )}
-          </div>
+                <code
+                  dangerouslySetInnerHTML={renderContent()} // Render the content with line breaks and lists
+                  className="text-white fw-bolder fs-6"
+                ></code>
+              </div>
+            </>
+          ) : (
+            "Not Selected Anyone"
+          )}
         </div>
       </div>
+      {/* 
+    
+
+      {/* ========Sidebar=== */}
 
       <div className={sidebar ? "sidenav_visible p-4" : "sidenav p-4"}>
         <div className="text-end">
@@ -216,6 +264,9 @@ const Snippets = () => {
             <div className="col-12">
               <label>Code</label>
               <ReactQuill
+                modules={{
+                  toolbar: toolbarOptions,
+                }}
                 style={{ backgroundColor: "white" }}
                 theme="snow"
                 value={codeValue}
