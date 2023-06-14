@@ -8,11 +8,13 @@ import Link from "next/link";
 import { MdDeleteOutline } from "react-icons/md";
 import { GrView } from "react-icons/gr";
 import { BaseURL } from "@utils/axiosRoute";
+import Pencil from "@components/Pencil";
 const MyProfile = () => {
   const router = useRouter();
   const { data: session } = useSession();
 
   const [myPosts, setMyPosts] = useState([]);
+  const [loading, setLoading] = useState(false);
   const [renderComp, setRenderComp] = useState(false);
 
   useEffect(() => {
@@ -20,24 +22,27 @@ const MyProfile = () => {
       router.push("/");
     }
     const fetchPosts = async () => {
+      setLoading(true);
       const response = await fetch(
         `${BaseURL}/api/blogs/usersblog/${session?.user.id}`
       ); //get the posts related to the user
       const data = await response.json();
-
       setMyPosts(data);
+      setLoading(false);
     };
 
     if (session?.user.id) fetchPosts();
   }, [session?.user.id, renderComp]);
 
   const handleBlogDelete = async (blogId) => {
+    setLoading(true);
     const res = await axios.delete(`${BaseURL}/api/blogs/${blogId}`);
     if (res.data === "Deleted") {
+      setLoading(false);
       alert("deleted");
       setRenderComp(!renderComp);
     } else {
-      ("somethign went wrong");
+      setLoading(false)("somethign went wrong");
     }
   };
   return (
@@ -59,33 +64,38 @@ const MyProfile = () => {
         </Link>
       </div>
       <div className="m-4 head_text">Your Blogs</div>
+      {loading ? (
+        <div className="d-flex justify-content-center loader-container ">
+          <Pencil />
+        </div>
+      ) : (
+        <div className="row g-3 m-4">
+          {myPosts?.map((item, key) => {
+            return (
+              <div className="col-12 col-lg-4" key={key}>
+                <div className="card">
+                  <div className="card-body  text-center" key={key}>
+                    <h5 className="card-title">{item.title}</h5>
+                    <p className="card-title">{item.subtitle}</p>
 
-      <div className="row g-3 m-4">
-        {myPosts?.map((item, key) => {
-          return (
-            <div className="col-12 col-lg-4" key={key}>
-              <div className="card">
-                <div className="card-body  text-center" key={key}>
-                  <h5 className="card-title">{item.title}</h5>
-                  <p className="card-title">{item.subtitle}</p>
-
-                  <Link href={`/blog/${item?._id}`}>
-                    <button className="btn border-0  mx-1">
-                      <GrView />
+                    <Link href={`/blog/${item?._id}`}>
+                      <button className="btn border-0  mx-1">
+                        <GrView />
+                      </button>
+                    </Link>
+                    <button
+                      onClick={() => handleBlogDelete(item?._id)}
+                      className="btn border-0  mx-1"
+                    >
+                      <MdDeleteOutline />
                     </button>
-                  </Link>
-                  <button
-                    onClick={() => handleBlogDelete(item?._id)}
-                    className="btn border-0  mx-1"
-                  >
-                    <MdDeleteOutline />
-                  </button>
+                  </div>
                 </div>
               </div>
-            </div>
-          );
-        })}
-      </div>
+            );
+          })}
+        </div>
+      )}
     </section>
   );
 };

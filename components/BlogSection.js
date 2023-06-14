@@ -7,13 +7,16 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { FcLike, FcLikePlaceholder } from "react-icons/fc";
 import { BaseURL } from "@utils/axiosRoute";
+import Pencil from "./Pencil";
 const BlogSection = () => {
   const { data: session } = useSession();
 
   const [allBlogs, setAllBlogs] = useState([]);
+  const [loading, setLoading] = useState(false);
   const [liked, setLiked] = useState(false);
   useEffect(() => {
     const fetchBlogs = async () => {
+      setLoading(true);
       try {
         const response = await axios.get(`${BaseURL}/api/blogs`);
         const blogs = response.data;
@@ -41,6 +44,7 @@ const BlogSection = () => {
         // );
 
         setAllBlogs(blogs);
+        setLoading(false);
       } catch (error) {
         console.log(error);
       }
@@ -61,18 +65,26 @@ const BlogSection = () => {
   };
 
   return (
-    <section className="d-flex justify-content-center align-items-center">
-      <div className="row container g-2 m-3 ">
-        {allBlogs?.map((blogs, key) => {
-          return (
-            <div className="col-12 col-md-4 col-lg-4 " key={key}>
-              <div className="card bg-transparent">
-                <div className="card-body">
-                  <div className="card-title fw-bold">{blogs?.title}</div>
-                  <div className="card-title fw-light">{blogs?.subtitle}</div>
+    <>
+      {loading ? (
+        <div className="d-flex justify-content-center loader-container ">
+          <Pencil />
+        </div>
+      ) : (
+        <section className="d-flex justify-content-center align-items-center">
+          <div className="row container g-2 m-3 ">
+            {allBlogs?.map((blogs, key) => {
+              return (
+                <div className="col-12 col-md-4 col-lg-4 " key={key}>
+                  <div className="card bg-transparent">
+                    <div className="card-body">
+                      <div className="card-title fw-bold">{blogs?.title}</div>
+                      <div className="card-title fw-light">
+                        {blogs?.subtitle}
+                      </div>
 
-                  <div className="d-flex justify-content-between align-items-baseline">
-                    {/* <div>
+                      <div className="d-flex justify-content-between align-items-baseline">
+                        {/* <div>
                       <Image
                         src={blogs.creatorImage}
                         width={20}
@@ -82,33 +94,35 @@ const BlogSection = () => {
                       />{" "}
                       <small>{blogs?.creatorName}</small>
                     </div>*/}
-                    <Link
-                      href={`/blog/${blogs._id}`}
-                      className="text-decoration-none btn btn-dark text-white text-dark"
-                    >
-                      Read
-                    </Link>
-                    <div>
-                      {blogs.likedBy.find(
-                        (obj) => obj.user_email === session?.user?.email
-                      ) ? (
-                        <>
-                          <FcLike /> <small>{blogs.likedBy.length}</small>
-                        </>
-                      ) : (
-                        <FcLikePlaceholder
-                          onClick={() => handlelike(blogs._id)}
-                        />
-                      )}
+                        <Link
+                          href={`/blog/${blogs._id}`}
+                          className="text-decoration-none btn btn-dark text-white text-dark"
+                        >
+                          Read
+                        </Link>
+                        <div>
+                          {blogs.likedBy.find(
+                            (obj) => obj.user_email === session?.user?.email
+                          ) ? (
+                            <>
+                              <FcLike /> <small>{blogs.likedBy.length}</small>
+                            </>
+                          ) : (
+                            <FcLikePlaceholder
+                              onClick={() => handlelike(blogs._id)}
+                            />
+                          )}
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
-            </div>
-          );
-        })}
-      </div>
-    </section>
+              );
+            })}
+          </div>
+        </section>
+      )}
+    </>
   );
 };
 
