@@ -36,29 +36,28 @@ const Nav = () => {
               alt="profile"
             />
             <Link href="/profile">
-              <span className="btn btn-outline-dark mx-2">Profile</span>
+              <span className="btn btn-no-outline-dark ">Profile</span>
             </Link>
             <Link href="/snippet_shrine">
-              <span className="btn btn-outline-dark mx-2">Snippets</span>
+              <span className="btn btn-no-outline-dark ">Snippets</span>
             </Link>
 
-            <button
+            <span
               type="button"
               onClick={signOut}
-              className="btn btn-outline-dark mx-2"
+              className="btn btn-no-outline-dark text-dark "
             >
               Sign Out
-            </button>
+            </span>
           </div>
         ) : (
           <>
             <Link href="/snippet_shrine">
-              <span className="btn btn-outline-dark mx-2">Snippets</span>
+              <span className="btn btn-no-outline-dark mx-2">Snippets</span>
             </Link>
             {providers &&
               Object.values(providers).map((provider) => (
-                <button
-                  type="btn btn-outline-secondary btn-sm"
+                <span
                   key={provider.name}
                   onClick={() => {
                     signIn(provider.id);
@@ -66,7 +65,7 @@ const Nav = () => {
                   className="btn btn-no-outline-dark"
                 >
                   Sign in
-                </button>
+                </span>
               ))}
           </>
         )}

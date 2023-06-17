@@ -421,3 +421,65 @@ html {
   border-top-color: transparent;
   animation: spin 1s linear infinite;
 }
+
+.snippet-list {
+  padding: 10px;
+}
+
+.snippet-item {
+  cursor: pointer;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  margin-bottom: 10px;
+}
+
+.snippet-item:hover {
+  background-color: #f0f0f0;
+}
+
+.snippet-item.active {
+  background-color: #f0f0f0;
+  font-weight: bold;
+}
+
+.snippet-details {
+  padding: 10px;
+}
+
+.placeholder {
+  text-align: center;
+  font-style: italic;
+  color: #888;
+}
+
+/* Add colors */
+.snippet-item:nth-child(odd) {
+  background-color: #f3f7f9;
+}
+
+.snippet-item:nth-child(even) {
+  background-color: #f9f3f7;
+}
+
+.snippet-item.active {
+  background-color: #e5eaf2;
+}
+
+.snippet-details {
+  background-color: #e5eaf2;
+}
+
+h2 {
+  color: #333;
+}
+
+pre {
+  background-color: #fff;
+  padding: 10px;
+  margin: 0;
+}
+
+p {
+  color: #777;
+}

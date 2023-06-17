@@ -13,6 +13,7 @@ import { CopyToClipboard } from "react-copy-to-clipboard";
 import "react-quill/dist/quill.snow.css";
 import "quill/dist/quill.core.css";
 import "quill/dist/quill.snow.css";
+import styles from "@styles/custom.module.css";
 
 const colors = [
   "#000000",
@@ -63,8 +64,11 @@ const toolbarOptions = [
 const Snippets = () => {
   const [sidebar, setSideBar] = useState(false);
   const [codeValue, setCodeValue] = useState("");
+  const [originalData, setOriginalData] = useState([]);
   const [getCode, setGetCode] = useState([]);
   const [flag, setFlag] = useState(false);
+  const [filteredSnippets, setFilteredSnippets] = useState([]);
+
   const { data: session } = useSession();
   const [viewCode, setViewCode] = useState(getCode[0]);
   const router = useRouter();
@@ -79,6 +83,7 @@ const Snippets = () => {
     const res = await axios.get(`${BaseURL}/api/code_snippets`);
     console.log("res.data", res);
     setGetCode(res?.data);
+    setOriginalData(res?.data);
   };
   useEffect(() => {
     // if (!session?.user) {
@@ -126,6 +131,7 @@ const Snippets = () => {
   };
 
   const [copied, setCopied] = React.useState(false);
+  const [searchValue, setSearchValue] = useState("");
 
   const onCopy = useCallback(() => {
     const codeToCopy = viewCode?.code || viewCode?.__html;
@@ -144,6 +150,22 @@ const Snippets = () => {
     }
   }, [viewCode]);
 
+  const handleSearch = (initials) => {
+    if (initials === undefined) {
+      setGetCode(getCode);
+    }
+    const filtered = getCode?.filter((snippet) => {
+      const values = Object.values(snippet).join("").toLowerCase();
+      return values.includes(initials.toLowerCase());
+    });
+
+    setGetCode(filtered);
+  };
+
+  const clearSearch = () => {
+    setGetCode(originalData);
+    setSearchValue("");
+  };
   return (
     <>
       {/* ==========Heading== */}
@@ -164,71 +186,145 @@ const Snippets = () => {
       </div>
 
       {/* ==========Snippets */}
-
-      <div className="row container-fluid">
-        <div className="col-6">
-          {getCode?.map((code, key) => {
-            return (
-              <div
-                style={{ background: "#AC92EC" }}
-                className="border m-0 p-3 rounded"
-                key={key}
-                onClick={() => setViewCode(code)}
-              >
-                <h5 className="card-title text-dark">{code.title}</h5>
-                <h6 className="card-subtitle text-dark">{code.description}</h6>
-                {/* <small className="card-text">{code.code}</small> */}
-              </div>
-            );
-          })}
+      <div>
+        <div className="d-flex justify-content-center my-3">
+          <input
+            type="text"
+            className="form-control w-25"
+            onChange={(e) => setSearchValue(e.target.value)}
+            value={searchValue}
+            placeholder="Search by initials..."
+          />
+          <button
+            className="btn btn-sm btn-outline-success mx-2"
+            onClick={() => handleSearch(searchValue)}
+          >
+            Search
+          </button>
+          <button
+            className="btn btn-sm btn-outline-success mx-2"
+            onClick={clearSearch}
+          >
+            Clear Search
+          </button>
         </div>
-        <div className="col-6 p-3 rounded" style={{ background: "#686194" }}>
-          {getCode ? (
-            <>
-              <div>
-                <h3 style={{ color: "#ccc4ff" }}>{viewCode?.title}</h3>
-              </div>
-
-              <div
-                style={{
-                  height: "100%",
-                  width: "100%",
-                  borderRadius: "10px",
-                  color: "white",
-                }}
-              >
-                <div className="row ">
-                  <div className="col-12 col-lg-6 my-3 text-center text-lg-start text-decoration-underline">
-                    {" "}
-                    <h6>{viewCode?.description}</h6>
+        {filteredSnippets.length > 0 ? (
+          filteredSnippets.map((snippet, index) => (
+            <div key={index}>
+              {Object.entries(snippet).map(([key, value]) => (
+                <p key={key}>
+                  <strong>{key}: </strong>
+                  {value}
+                </p>
+              ))}
+            </div>
+          ))
+        ) : (
+          <div className="row container-fluid">
+            <div className="col-lg-6 col-12 snippet-list">
+              {getCode?.map((code, key) => {
+                return (
+                  <div
+                    // style={{
+                    //   cursor: "pointer",
+                    //   padding: "10px",
+                    //   border: " 1px solid #ccc",
+                    //   borderRadius: "4px",
+                    //   marginBottom: "10px",
+                    // }}
+                    className="border m-0 p-3 rounded snippet-item "
+                    key={key}
+                    onClick={() => setViewCode(code)}
+                  >
+                    {code.title}
+                    {/* <small className="card-text">{code.code}</small> */}
                   </div>
-                  <div className="col-12 col-lg-6 text-center text-lg-end">
-                    {" "}
-                    <CopyToClipboard
-                      onCopy={onCopy}
-                      text={viewCode?.code || viewCode?.__html}
-                    >
-                      <button
-                        className="btn btn-sm btn-outline-info text-white"
-                        style={{ color: "#78d6dc" }}
+                );
+              })}
+            </div>
+            {/* <div
+              className="col-lg-6 col-12  snippet-details bg-dark"
+              // style={{ background: "#686194" }}
+            >
+              {getCode ? (
+                <>
+                  <div>
+                    <h3 style={{ color: "#ccc4ff" }}>{viewCode?.title}</h3>
+                  </div>
+
+                  <div
+                    style={{
+                      height: "100%",
+                      width: "100%",
+                      borderRadius: "10px",
+                      color: "white",
+                      padding: "10px",
+                    }}
+                  >
+                    <div className="row ">
+                      <div className="col-12 col-lg-6 my-3 text-center text-lg-start text-decoration-underline">
+                        {" "}
+                        <h6>{viewCode?.description}</h6>
+                      </div>
+                      <div className="col-12 col-lg-6 text-center text-lg-end">
+                        {" "}
+                        <CopyToClipboard
+                          onCopy={onCopy}
+                          text={viewCode?.code || viewCode?.__html}
+                        >
+                          <button
+                            className="btn btn-sm btn-outline-info text-white"
+                            style={{ color: "#78d6dc" }}
+                          >
+                            Copy to clipboard
+                          </button>
+                        </CopyToClipboard>
+                      </div>
+                    </div>
+
+                    <code
+                      dangerouslySetInnerHTML={renderContent()} // Render the content with line breaks and lists
+                      className="text-white fw-bolder fs-6"
+                    ></code>
+                  </div>
+                </>
+              ) : (
+                "Not Selected Anyone"
+              )}
+            </div> */}
+            <div className="col-lg-6">
+              <div className="snippet-details">
+                {viewCode ? (
+                  <div>
+                    <h2>{viewCode?.title}</h2>
+                    <div className="d-flex justify-content-end ">
+                      {" "}
+                      <CopyToClipboard
+                        onCopy={onCopy}
+                        text={viewCode?.code || viewCode?.__html}
                       >
-                        Copy to clipboard
-                      </button>
-                    </CopyToClipboard>
+                        <button
+                          className="btn btn-sm btn-outline-info text-dark"
+                          // style={{ color: "#78d6dc" }}
+                        >
+                          Copy to clipboard
+                        </button>
+                      </CopyToClipboard>
+                    </div>
+                    <pre
+                      dangerouslySetInnerHTML={renderContent()} // Render the content with line breaks and lists
+                      className="text-white fw-bolder fs-6"
+                    ></pre>
                   </div>
-                </div>
-
-                <code
-                  dangerouslySetInnerHTML={renderContent()} // Render the content with line breaks and lists
-                  className="text-white fw-bolder fs-6"
-                ></code>
+                ) : (
+                  <div className="">Select a snippet to view details</div>
+                )}
               </div>
-            </>
-          ) : (
-            "Not Selected Anyone"
-          )}
-        </div>
+            </div>
+          </div>
+        )}
       </div>
+
       {/* 
     
 

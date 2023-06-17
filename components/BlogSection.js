@@ -100,19 +100,21 @@ const BlogSection = () => {
                         >
                           Read
                         </Link>
-                        <div>
-                          {blogs.likedBy.find(
-                            (obj) => obj.user_email === session?.user?.email
-                          ) ? (
-                            <>
-                              <FcLike /> <small>{blogs.likedBy.length}</small>
-                            </>
-                          ) : (
-                            <FcLikePlaceholder
-                              onClick={() => handlelike(blogs._id)}
-                            />
-                          )}
-                        </div>
+                        {session?.user && (
+                          <div>
+                            {blogs.likedBy.find(
+                              (obj) => obj.user_email === session?.user?.email
+                            ) ? (
+                              <>
+                                <FcLike /> <small>{blogs.likedBy.length}</small>
+                              </>
+                            ) : (
+                              <FcLikePlaceholder
+                                onClick={() => handlelike(blogs._id)}
+                              />
+                            )}
+                          </div>
+                        )}
                       </div>
                     </div>
                   </div>
