@@ -41,6 +41,9 @@ const Nav = () => {
             <Link href="/snippet_shrine">
               <span className="btn btn-no-outline-dark ">Snippets</span>
             </Link>
+            <Link href="/thoughttrail">
+              <span className="btn btn-no-outline-dark mx-2">ThoughtTrail</span>
+            </Link>
 
             <span
               type="button"
@@ -54,6 +57,9 @@ const Nav = () => {
           <>
             <Link href="/snippet_shrine">
               <span className="btn btn-no-outline-dark mx-2">Snippets</span>
+            </Link>
+            <Link href="/thoughttrail">
+              <span className="btn btn-no-outline-dark mx-2">ThoughtTrail</span>
             </Link>
             {providers &&
               Object.values(providers).map((provider) => (

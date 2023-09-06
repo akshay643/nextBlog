@@ -8,18 +8,8 @@ export default function Home() {
         className="text-center d-flex justify-content-center align-items-center flex-column"
         style={{ height: "50vh" }}
       >
-        <h1 className="head_text text-center">
-          Welcome Everyone!
-          <br className="max-md:hidden" />
-          <span className="orange_gradient text-center gradient_color">
-            ThoughtTrail
-          </span>
-        </h1>
-        <p className="desc text-center">
-          Find Your Path, Share Your Thoughts with ThoughtTrail
-        </p>
+        This is Home page
       </div>
-      <BlogSection />
     </section>
   );
 }

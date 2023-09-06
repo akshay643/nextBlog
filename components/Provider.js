@@ -7,3 +7,4 @@ const Provider = ({ children, session }) => (
 );
 
 export default Provider;
+export { SessionProvider } from "next-auth/react";
