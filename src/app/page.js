@@ -1,6 +1,6 @@
 import "@styles/globals.css";
 import BlogSection from "@components/BlogSection";
-
+import Dashboard from "@components/Dashboard";
 export default function Home() {
   return (
     <section>
@@ -8,7 +8,7 @@ export default function Home() {
         className="text-center d-flex justify-content-center align-items-center flex-column"
         style={{ height: "50vh" }}
       >
-        This is Home page
+        <Dashboard />
       </div>
     </section>
   );
