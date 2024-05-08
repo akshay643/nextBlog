@@ -19,9 +19,9 @@ const Nav = () => {
   }, []);
 
   return (
-    <nav className="d-flex justify-content-between m-4 text-light   ">
+    <nav className="d-flex justify-content-between m-4 text-light align-items-center">
       <Link href="/" className="d-flex flex-center">
-        <Image src="/next.svg" alt="logo" width={50} height={50} />
+        <Image src="/snippets.svg" alt="logo" width={100} height={75} />
       </Link>
 
       {/* Desktop Navigation */}
