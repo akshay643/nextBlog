@@ -1,9 +1,9 @@
 "use client";
 import React, { useState, useEffect, useCallback } from "react";
-import { Session } from "next-auth";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
-
+import "react-responsive-modal/styles.css";
+import { Modal } from "react-responsive-modal";
 import dynamic from "next/dist/shared/lib/dynamic";
 import axios from "axios";
 import { BaseURL } from "@utils/axiosRoute";
@@ -13,7 +13,6 @@ import { CopyToClipboard } from "react-copy-to-clipboard";
 import "react-quill/dist/quill.snow.css";
 import "quill/dist/quill.core.css";
 import "quill/dist/quill.snow.css";
-import styles from "@styles/custom.module.css";
 
 const colors = [
   "#000000",
@@ -68,7 +67,13 @@ const Snippets = () => {
   const [getCode, setGetCode] = useState([]);
   const [flag, setFlag] = useState(false);
   const [filteredSnippets, setFilteredSnippets] = useState([]);
+  const [open, setOpen] = useState(false);
 
+  const onOpenModal = (e) => {
+    setOpen(true);
+    setViewCode(e);
+  };
+  const onCloseModal = () => setOpen(false);
   const { data: session } = useSession();
   const [viewCode, setViewCode] = useState(getCode[0]);
   const router = useRouter();
@@ -116,10 +121,7 @@ const Snippets = () => {
     });
     if (res?.data === "Created") {
       setFlag(!flag);
-      // setGetCode({
-      //   title: "",
-      //   description: "",
-      // });
+
       setCodeValue("");
       setSideBar(false);
     } else {
@@ -170,7 +172,7 @@ const Snippets = () => {
     <>
       {/* ==========Heading== */}
       <div
-        className="d-flex w-100 justify-content-between align-items-center bg-dark"
+        className="d-flex w-100 justify-content-between position-relative align-items-center bg-dark"
         style={{ height: "5rem" }}
       >
         <h5 className="text-white mx-4">Getting started with snippets</h5>
@@ -186,7 +188,7 @@ const Snippets = () => {
       </div>
 
       {/* ==========Snippets */}
-      <div>
+      <div className="">
         <div className="d-flex justify-content-center my-3">
           <input
             type="text"
@@ -220,21 +222,21 @@ const Snippets = () => {
             </div>
           ))
         ) : (
-          <div className="row container-fluid">
-            <div className="col-lg-6 col-12 snippet-list">
+          <div className=" container-fluid">
+            <div className="d-flex flex-wrap w-100 snippet-list">
               {getCode?.map((code, key) => {
                 return (
                   <div
-                    // style={{
-                    //   cursor: "pointer",
-                    //   padding: "10px",
-                    //   border: " 1px solid #ccc",
-                    //   borderRadius: "4px",
-                    //   marginBottom: "10px",
-                    // }}
-                    className="border m-0 p-3 rounded snippet-item "
+                    style={{
+                      cursor: "pointer",
+                      padding: "10px",
+                      border: " 1px solid #ccc",
+                      borderRadius: "4px",
+                      marginBottom: "10px",
+                    }}
+                    className="border m-0 p-3 w-25 rounded snippet-item "
                     key={key}
-                    onClick={() => setViewCode(code)}
+                    onClick={() => onOpenModal(code)}
                   >
                     {code.title}
                     {/* <small className="card-text">{code.code}</small> */}
@@ -242,85 +244,39 @@ const Snippets = () => {
                 );
               })}
             </div>
-            {/* <div
-              className="col-lg-6 col-12  snippet-details bg-dark"
-              // style={{ background: "#686194" }}
-            >
-              {getCode ? (
-                <>
-                  <div>
-                    <h3 style={{ color: "#ccc4ff" }}>{viewCode?.title}</h3>
-                  </div>
-
-                  <div
-                    style={{
-                      height: "100%",
-                      width: "100%",
-                      borderRadius: "10px",
-                      color: "white",
-                      padding: "10px",
-                    }}
-                  >
-                    <div className="row ">
-                      <div className="col-12 col-lg-6 my-3 text-center text-lg-start text-decoration-underline">
-                        {" "}
-                        <h6>{viewCode?.description}</h6>
-                      </div>
-                      <div className="col-12 col-lg-6 text-center text-lg-end">
-                        {" "}
+            <Modal open={open} onClose={onCloseModal} center>
+              <div className="col-lg-12 bg-dark ">
+                <div className="snippet-details bg-white">
+                  {viewCode ? (
+                    <div className="bg-white text-white">
+                      <h2>{viewCode?.title}</h2>
+                      <div className="d-flex justify-content-end text-white ">
                         <CopyToClipboard
                           onCopy={onCopy}
                           text={viewCode?.code || viewCode?.__html}
                         >
-                          <button
-                            className="btn btn-sm btn-outline-info text-white"
-                            style={{ color: "#78d6dc" }}
-                          >
+                          <button className="btn btn-sm btn-outline-info text-dark">
                             Copy to clipboard
                           </button>
                         </CopyToClipboard>
                       </div>
+                      <pre
+                        style={{
+                          color: "white",
+                          border: "1px solid lightgray",
+                          borderRadius: "10px",
+                          marginTop: 10,
+                        }} // This will override any other text color
+                        dangerouslySetInnerHTML={renderContent()} // Render the content with line breaks and lists
+                        className="text-white fw-bolder fs-6 bg-red"
+                      ></pre>
                     </div>
-
-                    <code
-                      dangerouslySetInnerHTML={renderContent()} // Render the content with line breaks and lists
-                      className="text-white fw-bolder fs-6"
-                    ></code>
-                  </div>
-                </>
-              ) : (
-                "Not Selected Anyone"
-              )}
-            </div> */}
-            <div className="col-lg-6">
-              <div className="snippet-details">
-                {viewCode ? (
-                  <div>
-                    <h2>{viewCode?.title}</h2>
-                    <div className="d-flex justify-content-end ">
-                      {" "}
-                      <CopyToClipboard
-                        onCopy={onCopy}
-                        text={viewCode?.code || viewCode?.__html}
-                      >
-                        <button
-                          className="btn btn-sm btn-outline-info text-dark"
-                          // style={{ color: "#78d6dc" }}
-                        >
-                          Copy to clipboard
-                        </button>
-                      </CopyToClipboard>
-                    </div>
-                    <pre
-                      dangerouslySetInnerHTML={renderContent()} // Render the content with line breaks and lists
-                      className="text-white fw-bolder fs-6"
-                    ></pre>
-                  </div>
-                ) : (
-                  <div className="">Select a snippet to view details</div>
-                )}
+                  ) : (
+                    <div className="">Select a snippet to view details</div>
+                  )}
+                </div>
               </div>
-            </div>
+            </Modal>
           </div>
         )}
       </div>
